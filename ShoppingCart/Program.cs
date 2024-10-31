@@ -1,7 +1,35 @@
+using DotNetEnv;
+using Amazon;
+using Amazon.S3;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using ShoppingCart.Data;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<ShoppingCartContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ShoppingCartContext") ?? throw new InvalidOperationException("Connection string 'ShoppingCartContext' not found.")));
+
+// Configure AWS S3 using environment variables
+var awsOptions = new AmazonS3Config
+{
+    RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))
+};
+
+var s3Client = new AmazonS3Client(
+    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
+    awsOptions
+);
+
+// Register the S3 client as a singleton service
+builder.Services.AddSingleton<IAmazonS3>(s3Client);
+
 
 var app = builder.Build();
 
