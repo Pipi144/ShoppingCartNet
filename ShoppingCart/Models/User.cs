@@ -2,6 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ShoppingCart.Models;
 
+public enum UserRole
+{
+    Admin,
+    Member
+}
 public class User
 {
     public int Id { get; set; }
@@ -12,5 +17,8 @@ public class User
     
     [Required]
     public string Password { get; set; }
+    
+    [Required]
+    public UserRole Role { get; set; } = UserRole.Member;
     public string? ImageUrl { get; set; }
 }

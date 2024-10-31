@@ -4,6 +4,8 @@ using Amazon.S3;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Data;
+using ShoppingCart.Repository;
+using ShoppingCart.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,11 @@ Env.Load();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ShoppingCartContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ShoppingCartContext") ?? throw new InvalidOperationException("Connection string 'ShoppingCartContext' not found.")));
+
+// Register repositories and services
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserService>();
+
 
 // Configure AWS S3 using environment variables
 var awsOptions = new AmazonS3Config
