@@ -17,15 +17,14 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ShoppingCartContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ShoppingCartContext") ?? throw new InvalidOperationException("Connection string 'ShoppingCartContext' not found.")));
 
-// Register repositories and services
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<UserService>();
+
+
 
 
 // Configure AWS S3 using environment variables
 var awsOptions = new AmazonS3Config
 {
-    RegionEndpoint = RegionEndpoint.GetBySystemName(Environment.GetEnvironmentVariable("AWS_REGION"))
+    RegionEndpoint = RegionEndpoint.APSoutheast1
 };
 
 var s3Client = new AmazonS3Client(
@@ -36,7 +35,14 @@ var s3Client = new AmazonS3Client(
 
 // Register the S3 client as a singleton service
 builder.Services.AddSingleton<IAmazonS3>(s3Client);
-
+// Register repositories and services
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ProductRepository>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProductImageRepository>();
+builder.Services.AddScoped<ProductImageService>();
+builder.Services.AddScoped<StorageService>();
 
 var app = builder.Build();
 

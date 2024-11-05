@@ -11,8 +11,9 @@ public class Product
     [DataType(DataType.Text)]
     public string ProductName { get; set; }
 
-    [Required] public decimal Price { get; set; } = 0;
+    [Required] public double Price { get; set; } = 0.0;
     
-    public ICollection<ProductImage> ProductImage { get; set; }
-
+    
+    
+    public List<ProductImage> ProductImage { get; set; } = new List<ProductImage>();
 }

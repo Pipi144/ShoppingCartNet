@@ -1,0 +1,52 @@
+.add-img-btn {
+    margin-block: 10px;
+}
+
+.img-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    .img-item-wrapper {
+        width: calc(20% - 20px);
+        margin:10px;
+        aspect-ratio: 1;
+        display: flex;
+        border-radius: 8px;
+        position: relative; 
+        overflow: hidden;
+        
+        background-size: cover;
+        background-position: center;
+        
+        .remove-btn{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border-radius: 100%;
+            background-color: rgba(128, 128, 128, 0.8);
+            cursor: pointer;
+            padding: 5px 10px;
+            color:white;
+            font-size: 14px;
+            border: none;
+        }
+    }
+}
+
+.error-text {
+    color:red;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.spinner-wrapper {
+    position: absolute;
+    top:0;right:0;bottom:0;left:0;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display:none;
+}

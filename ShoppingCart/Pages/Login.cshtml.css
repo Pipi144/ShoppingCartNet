@@ -1,0 +1,59 @@
+.container {
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        font-family: "Roboto Light", sans-serif;
+        color: #0c63e4;
+    }
+    .form-container {
+        border: 1px solid gainsboro;
+        border-radius: 5px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    label {
+        font-size: 1.6rem;
+        font-weight: 500;
+        margin-bottom: 4px;
+        font-family: "Roboto Light", sans-serif;    
+    }
+    input {
+        font-size: 16px;
+        font-weight: 400;
+        
+    }
+    .submit-input {
+        margin: 4px 0px;
+        align-self: center;
+    }
+    .error-text {
+        font-size: 1rem;
+        color: red;
+        font-style: italic;
+    }
+    
+    .create-user {
+        border-radius: 30px;
+        padding: 10px 20px;
+        color: white;
+        background-color: #0c63e4;
+        font-size: 1.2rem;
+        margin-top:20px;
+        transition: all 0.2s ease;
+        cursor:pointer;
+        &:hover {
+            opacity: 0.7;
+            transform: scale(1.05);
+        }
+    }
+}
