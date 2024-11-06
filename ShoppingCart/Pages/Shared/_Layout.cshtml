@@ -47,7 +47,7 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script>
     document.getElementById('home-link').addEventListener('click', function() {
-        sessionStorage.clear(); // This clears all data in SessionStorage
+        localStorage.clear(); // This clears all data in SessionStorage
         alert('Session storage cleared!'); // Optional: notify the user
     });
 </script>

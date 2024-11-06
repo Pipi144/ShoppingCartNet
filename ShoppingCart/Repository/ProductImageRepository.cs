@@ -42,6 +42,11 @@ public class ProductImageRepository
         
         
     }
+
+    public ProductImage? GetProductImageById(int imageId)
+    {
+        return _context.ProductImage.FirstOrDefault(img=>img.ProductImageId == imageId);
+    }
     private async Task SaveImageChanges()
     {
         await _context.SaveChangesAsync();

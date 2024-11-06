@@ -17,6 +17,10 @@ public class ProductImageService
         return await _productImageRepository.GetProductImagesByProductIdAsync(productId);
     }
 
+    public ProductImage? GetProductImageById(int productImageId)
+    {
+        return _productImageRepository.GetProductImageById(productImageId);
+    }
     public async Task DeleteProductImage(int productImageId)
     {
         await _productImageRepository.RemoveProductImage(productImageId);

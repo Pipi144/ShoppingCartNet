@@ -44,7 +44,24 @@ public class ProductRepository
 
     public Product? GetProductById(int id)
     {
-        return _context.Product.FirstOrDefault(product => product.ProductId == id);
+        var product = _context.Product.FirstOrDefault(product => product.ProductId == id);
+        if (product != null)
+        {
+            product.ProductImage = _context.ProductImage.Where(img => img.ProductId == product.ProductId)
+                .Select(img => new ProductImage()
+                {
+                    ProductImageId = img.ProductImageId,
+                    AwsPath = img.AwsPath,
+                    ImageUrl =
+                        _storageService.GeneratePreSignedUrl(
+                            img.AwsPath,
+                            TimeSpan.FromHours(1) // Set your desired expiration duration
+                        )
+                }).ToList();
+        }
+
+
+        return product;
     }
 
     public List<Product> GetProductsByName(string name)

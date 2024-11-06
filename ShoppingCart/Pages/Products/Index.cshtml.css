@@ -40,6 +40,15 @@
         font-weight: 500;
         font-size: 14px;
     }
+    .menu-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        
+        .menu-btn {
+            margin: 0px 5px !important;
+        }
+    }
 }
 
 .container {
@@ -47,4 +56,18 @@
     padding: 20px;
     display:flex;
     flex-wrap: wrap;
+}
+
+.add-product-btn {
+    align-self: flex-end;
+    justify-self: flex-end;
+    padding: 5px 10px;
+    background-color: #0b5ed7;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: fit-content;
+
 }
