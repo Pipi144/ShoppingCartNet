@@ -21,58 +21,55 @@ public class ProductRepository
     public async Task<List<Product>> GetAllProducts()
     {
         var products = await _context.Product
-            
+            .Include(p => p.ProductImage) // Eager load images with products
             .ToListAsync();
+
         foreach (var product in products)
         {
-            product.ProductImage = _context.ProductImage.Where(img => img.ProductId == product.ProductId)
-                .Select(img => new ProductImage()
-                {
-                    ProductImageId = img.ProductImageId,
-                    AwsPath = img.AwsPath,
-                    ImageUrl =
-                        _storageService.GeneratePreSignedUrl(
-                            img.AwsPath,
-                            TimeSpan.FromHours(1) // Set your desired expiration duration
-                        )
-                }).ToList();
-        };
-        Console.WriteLine("PRODUCT:", products);
+            foreach (var image in product.ProductImage)
+            {
+                image.ImageUrl = _storageService.GeneratePreSignedUrl(
+                    image.AwsPath,
+                    TimeSpan.FromHours(1) // Set your desired expiration duration
+                );
+            }
+        }
 
         return products;
     }
 
-    public Product? GetProductById(int id)
+    public async Task<Product?> GetProductById(int id)
     {
-        var product = _context.Product.FirstOrDefault(product => product.ProductId == id);
+        var product = await _context.Product
+            .Include(p => p.ProductImage) // Eager load images with products
+            .FirstOrDefaultAsync(p => p.ProductId == id);
+
         if (product != null)
         {
-            product.ProductImage = _context.ProductImage.Where(img => img.ProductId == product.ProductId)
-                .Select(img => new ProductImage()
-                {
-                    ProductImageId = img.ProductImageId,
-                    AwsPath = img.AwsPath,
-                    ImageUrl =
-                        _storageService.GeneratePreSignedUrl(
-                            img.AwsPath,
-                            TimeSpan.FromHours(1) // Set your desired expiration duration
-                        )
-                }).ToList();
+            foreach (var image in product.ProductImage)
+            {
+                image.ImageUrl = _storageService.GeneratePreSignedUrl(
+                    image.AwsPath,
+                    TimeSpan.FromHours(1)
+                );
+            }
         }
-
 
         return product;
     }
 
-    public List<Product> GetProductsByName(string name)
+    public async Task<List<Product>> GetProductsByName(string name)
     {
-        return _context.Product.Where(product => product.ProductName.ToLower().Contains(name.ToLower())).ToList();
+        return await _context.Product
+            .Where(product => product.ProductName.ToLower().Contains(name.ToLower()))
+            .ToListAsync();
     }
 
     public async Task<Boolean> DeleteProduct(int id)
     {
-        var product = GetProductById(id);
+        var product = await GetProductById(id);
         if (product == null) return false;
+
         try
         {
             _context.Product.Remove(product);
@@ -81,7 +78,7 @@ public class ProductRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine("Error deleting product:", e);
             return false;
         }
     }
@@ -104,10 +101,12 @@ public class ProductRepository
 
     public async Task<Boolean> UpdateProduct(Product product)
     {
-        var products = GetProductById(product.ProductId);
+        var existingProduct = await GetProductById(product.ProductId);
+        if (existingProduct == null) return false;
+        
         try
         {
-            _context.Attach(product).State = EntityState.Modified;
+            _context.Attach(existingProduct).State = EntityState.Modified;
             await SaveProductChanges();
             return true;
         }

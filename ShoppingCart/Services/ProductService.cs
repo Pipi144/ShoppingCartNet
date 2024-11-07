@@ -6,12 +6,12 @@ namespace ShoppingCart.Services;
 public class ProductService
 {
     private readonly ProductRepository _productRepository;
+    private readonly StorageService _storageService;
     
-    
-    public ProductService(ProductRepository productRepository)
+    public ProductService(ProductRepository productRepository, StorageService storageService)
     {
         _productRepository = productRepository;
-        
+        _storageService = storageService;
     }
 
     public async Task<List<Product>> GetProducts()
@@ -19,14 +19,14 @@ public class ProductService
         return await _productRepository.GetAllProducts();
     }
 
-    public List<Product> GetProductByName(string name)
+    public async Task<List<Product>> GetProductByName(string name)
     {
-        return _productRepository.GetProductsByName(name);
+        return await _productRepository.GetProductsByName(name);
     }
 
-    public Product? GetProductById(int id)
+    public async Task<Product?> GetProductById(int id)
     {
-        return _productRepository.GetProductById(id);
+        return await _productRepository.GetProductById(id);
     }
 
     public async Task<Product?> AddProduct(Product product)
@@ -41,6 +41,20 @@ public class ProductService
 
     public async Task<Boolean> DeleteProduct(int id)
     {
-        return await _productRepository.DeleteProduct(id);
+        try
+        {
+            var res =  await _productRepository.DeleteProduct(id);
+            if (res)
+            {
+                await _storageService.DeleteFolderAsync($"{id}");
+            }
+            return res;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

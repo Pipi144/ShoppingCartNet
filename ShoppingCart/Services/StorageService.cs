@@ -89,14 +89,14 @@ public class StorageService
         
     }
 
-    public async Task OnPostDeleteFolderAsync(string folderName)
+    public async Task DeleteFolderAsync(string folderName)
     {
         // Ensure folder name ends with a slash ("/") to target all objects within the folder
         if (!folderName.EndsWith("/"))
         {
             folderName += "/";
         }
-
+        Console.WriteLine($"Deleting folder {folderName}");
         // List all objects under the folder prefix
         var listRequest = new ListObjectsV2Request
         {
