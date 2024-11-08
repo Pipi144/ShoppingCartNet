@@ -106,7 +106,7 @@ public class ProductRepository
         
         try
         {
-            _context.Attach(existingProduct).State = EntityState.Modified;
+            _context.Entry(existingProduct).CurrentValues.SetValues(product);
             await SaveProductChanges();
             return true;
         }

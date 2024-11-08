@@ -6,10 +6,12 @@ namespace ShoppingCart.Services;
 public class ProductImageService
 {
     private readonly ProductImageRepository _productImageRepository;
+    private readonly StorageService _storageService;
 
-    public ProductImageService(ProductImageRepository productImageRepository)
+    public ProductImageService(ProductImageRepository productImageRepository, StorageService storageService)
     {
         _productImageRepository = productImageRepository;
+        _storageService = storageService;
     }
 
     public async Task<IEnumerable<ProductImage>> GetProductImages(int productId)
@@ -23,11 +25,23 @@ public class ProductImageService
     }
     public async Task DeleteProductImage(int productImageId)
     {
-        await _productImageRepository.RemoveProductImage(productImageId);
+        // Retrieve the image from the database
+        var image = _productImageRepository.GetProductImageById(productImageId);
+        if (image != null)
+        {
+            // Delete the image from S3 storage
+            await _storageService.DeleteSingleFile(image.AwsPath);
+
+            // Remove the image from the database
+            await _productImageRepository.RemoveProductImage(productImageId);
+        }
+
+
     }
 
     public async Task AddProductImage(ProductImage productImage)
     {
+        
         await _productImageRepository.AddProductImageAsync(productImage);
     }
 }
