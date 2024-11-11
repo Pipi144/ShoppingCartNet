@@ -1,12 +1,18 @@
 using ShoppingCart.Models;
 using ShoppingCart.Repository;
-
+using Microsoft.AspNetCore.Http;
 namespace ShoppingCart.Services;
 
+public class UserSession 
+{
+    public int UserId { get; set; }
+    public string UserName { get; set; }
+    public int SessionTime {get; set;}
+}
 public class UserService
 {
     private readonly UserRepository _userRepository;
-
+    
     public UserService(UserRepository userRepository)
     {
         _userRepository = userRepository;
@@ -44,18 +50,19 @@ public class UserService
         return res;
     }
 
-    public Boolean Login(string username, string password)
+    public User? Login(string username, string password)
     {
         var userMatch = _userRepository.FindUserByUsername(username);
         if (userMatch == null || (userMatch.Password != password))
         {
-            return false;
+            return null;
         }
         else
         {
-            return true;
+            return userMatch;
         }
     }
+    
 
     public void SaveChanges()
     {

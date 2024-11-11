@@ -1,0 +1,50 @@
+@using ShoppingCart.Services
+@model NavBarModel
+@{
+}
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+
+    <a class="navbar-brand" asp-area="" asp-page="/Index">Shopping Cart</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index" id="home-link">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+            </li>
+        </ul>
+    </div>
+
+
+    @if (Model.user != null)
+    {
+        <div class="rounded-circle lh-base bg-primary text-white fs-4  px-2 ">
+            @Model.user.UserName[0]
+        </div>
+
+        <a class="btn-sm rounded-circle  position-relative mx-4 flex-shrink-0 cursor-pointer" asp-page="/ProceedCart/Index">
+            <i class="bi bi-cart cart-icon" aria-hidden="true">
+                <use xlink:href="#box-seam"></use>
+            </i>
+            <span class="position-absolute translate-middle badge 
+rounded-pill text-bg-secondary rounded-circle py-1 px-2 bg-primary text-white cart-qty">
+                @(Model.cart?.Items.Count ?? 0)
+
+            </span>
+        </a>
+
+        <button class="btn btn-outline-danger">Log out</button>
+    }
+    else
+    {
+        <a asp-page="/Login" class="btn btn-primary">Login</a>
+    }
+
+
+</nav>

@@ -1,0 +1,35 @@
+@page
+@model ShoppingCart.Pages.ProceedCart.Index
+
+@{
+
+}
+<div class="container-fluid flex-column h-100">
+    <h1 class="fw-bolder align-self-center">Cart</h1>
+    <div class="container-fluid flex-wrap flex-row d-flex flex-fill overflow-auto">
+
+        @foreach (var (item, idx) in Model.CartSession.Items.Select((item, idx) => (item, idx)))
+        {
+        <div class="item">
+            @if (item.Product.ProductImage.Count > 0 && item.Product.ProductImage[0].ImageUrl != null)
+            {
+            <img src="@item.Product.ProductImage[0].ImageUrl" alt="Img#@item.Product.ProductImage[0].ProductImageId"/>
+            }
+            else
+            {
+            <div class="empty-placeholder">
+                No Image Available
+            </div>
+            }
+
+            <h1>@item.Product.ProductName</h1>
+            <h2>$ @item.Product.Price</h2>
+
+
+
+        </div>
+        }
+    </div>
+</div>
+
+

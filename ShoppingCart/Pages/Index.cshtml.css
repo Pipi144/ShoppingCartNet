@@ -1,0 +1,18 @@
+
+
+@keyframes scaleXAnimation {
+    0% {
+        transform: scaleX(1); /* Original size */
+    }
+    50% {
+        transform: scaleX(1.2); /* 1.2x width */
+    }
+    100% {
+        transform: scaleX(1); /* Return to original size */
+    }
+}
+
+/* Applying the animation */
+.animated-box {
+    animation: scaleXAnimation 2s ease-in-out infinite;
+}

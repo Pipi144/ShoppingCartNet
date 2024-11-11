@@ -44,6 +44,17 @@ builder.Services.AddScoped<ProductImageRepository>();
 builder.Services.AddScoped<ProductImageService>();
 builder.Services.AddScoped<StorageService>();
 
+
+// Add session service
+builder.Services.AddDistributedMemoryCache(); // Required for session state
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(720); // Set session timeout
+    options.Cookie.HttpOnly = true; // For security reasons
+    options.Cookie.IsEssential = true; // Make sure the cookie is essential for the app
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,13 +65,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession(); // Enable session middleware
 app.MapRazorPages();
 
 app.Run();

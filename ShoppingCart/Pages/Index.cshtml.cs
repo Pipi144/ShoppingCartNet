@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ShoppingCart.Services;
 
 namespace ShoppingCart.Pages;
 
@@ -14,6 +15,9 @@ public class IndexModel : PageModel
 
     public IActionResult OnGet()
     {
-        return RedirectToPage("/Login");
+        var userSession = HttpContext.Session.GetObjectFromJson<UserSession?>(StorageKeys.UserSessionKey);
+        if (userSession !=null)
+            return RedirectToPage("/Products/Index");
+        else return Page();
     }
 }
