@@ -7,7 +7,9 @@ public class UserSession
 {
     public int UserId { get; set; }
     public string UserName { get; set; }
-    public int SessionTime {get; set;}
+    public int SessionTime { get; set; }
+
+    public UserRole Role { get; set; }
 }
 public class UserService
 {
