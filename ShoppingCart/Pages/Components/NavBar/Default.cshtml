@@ -38,8 +38,10 @@ rounded-pill text-bg-secondary rounded-circle py-1 px-2 bg-primary text-white ca
 
             </span>
         </a>
-
-        <button class="btn btn-outline-danger">Log out</button>
+        <form method="post" asp-page-handler="Logout">
+            <button type="submit" class="btn btn-outline-danger">Log out</button>
+        </form>
+        
     }
     else
     {

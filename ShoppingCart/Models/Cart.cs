@@ -19,10 +19,14 @@ public class Cart
         }
     }
 
-    public void RemoveCartItem(CartItem item)
+    public void RemoveCartItem(int productId)
     {
-        Items.Remove(item);
-        Total -= item.TotalPrice;
+        var item = Items.FirstOrDefault(p=>p.Product.ProductId==productId);
+        if (item != null)
+        {
+            Items.Remove(item);
+            Total -= item.TotalPrice;
+        }
     }
     
     public void AddToCart(CartItem item)

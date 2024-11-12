@@ -29,7 +29,5 @@ public class NavBarViewComponent : ViewComponent
         };
         return View("Default", navBarModel);
     }
-
-        
     
 }

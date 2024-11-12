@@ -4,32 +4,64 @@
 @{
 
 }
-<div class="container-fluid flex-column h-100">
+<div class="w-100 d-flex flex-column h-100 position-relative overflow-hidden" style="max-height: 100%;  max-width: 1024px">
     <h1 class="fw-bolder align-self-center">Cart</h1>
-    <div class="container-fluid flex-wrap flex-row d-flex flex-fill overflow-auto">
-
+    <div class="w-100 flex-column d-flex flex-fill overflow-auto mb-1">
+        @if (Model.CartSession.Items.Count == 0)
+        {
+            <h1>Empty Cart</h1>
+        }
         @foreach (var (item, idx) in Model.CartSession.Items.Select((item, idx) => (item, idx)))
         {
-        <div class="item">
-            @if (item.Product.ProductImage.Count > 0 && item.Product.ProductImage[0].ImageUrl != null)
-            {
-            <img src="@item.Product.ProductImage[0].ImageUrl" alt="Img#@item.Product.ProductImage[0].ProductImageId"/>
-            }
-            else
-            {
-            <div class="empty-placeholder">
-                No Image Available
+            <div class="item w-100 py-2 px-4 rounded-2 my-1 d-flex flex-row justify-content-between ">
+                
+                    @if (item.Product.ProductImage.Count > 0 && item.Product.ProductImage[0].ImageUrl != null)
+                    {
+                    <img class="w-25 on" style="aspect-ratio: 1" src="@item.Product.ProductImage[0].ImageUrl" alt="Img#@item.Product.ProductImage[0].ProductImageId"/>
+                    }
+                    else
+                    {
+                    <div class="empty-placeholder w-25 ratio-1x1 d-flex justify-content-center align-items-center">
+                        No Image Available
+                    </div>
+                    }
+                    <div class="flex-fill d-flex flex-column mx-3 ">
+                        <h3>@item.Product.ProductName</h3>
+                        <h5>$ @item.Product.Price</h5>
+                    </div>
+
+
+                <div class="d-flex flex-column">
+                    <div class="mb-3 d-flex flex-row align-items-center">
+                       
+                        
+                        <form method="post" asp-page-handler="ReduceQty" asp-route-productId="@item.Product.ProductId">
+
+                            <button type="submit" class="mx-1 bg-transparent p-1 border-0 rounded-circle"><i class="bi bi-chevron-down text-black" style="font-size: 16px"></i></button>
+                        </form>
+                        <h6>@item.Quantity</h6>
+                        <form method="post" asp-page-handler="IncreaseQty" asp-route-productId="@item.Product.ProductId">
+
+                            <button type="submit" class="mx-1 bg-transparent p-1 border-0 rounded-circle"><i class="bi bi-chevron-up text-black" style="font-size: 16px"></i></button>
+                        </form>
+                    </div>
+                    
+                    <form method="post" asp-page-handler="RemoveCartItem" asp-route-productId="@item.Product.ProductId">
+                        <button type="submit" class="btn btn-danger align-self-start px-2 py-1">Remove</button>
+                    </form>
+                    
+                </div>
+
+              
             </div>
-            }
-
-            <h1>@item.Product.ProductName</h1>
-            <h2>$ @item.Product.Price</h2>
-
-
-
-        </div>
+            
         }
     </div>
+    <h3 class="text-end mt-auto">Total  $ @Model.CartSession.Total</h3>
 </div>
 
 
+
+<script>
+    console.log(sessionStorage.getItem("userSession"))
+</script>
