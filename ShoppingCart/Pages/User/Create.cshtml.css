@@ -1,0 +1,7 @@
+.container-sm {
+    max-width: 500px;
+}
+.form-group {
+    width: 100%;
+    margin: 10px 0;
+}

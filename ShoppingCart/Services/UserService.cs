@@ -42,7 +42,6 @@ public class UserService
 
     public void AddUser(User user)
     {
-        user.Role = UserRole.Member;
         _userRepository.CreateUser(user);
     }
 
