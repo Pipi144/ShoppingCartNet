@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <Folder Include="Pages\Components\UserInitial\" />
-      <Folder Include="Pages\User\" />
     </ItemGroup>
 
 </Project>

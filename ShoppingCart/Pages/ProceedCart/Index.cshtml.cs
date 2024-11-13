@@ -96,7 +96,7 @@ public class Index : PageModel
     // the button trigger is in Navbar, but handler is placed here
     public async Task<IActionResult> OnPostLogoutAsync()
     {
-        HttpContext.Session.Remove(StorageKeys.UserSessionKey);
+        HttpContext.Session.Clear();
         return RedirectToPage("/Index");
     }
 }

@@ -1,3 +1,4 @@
+@using ShoppingCart.Models
 @using ShoppingCart.Services
 @model NavBarModel
 @{
@@ -15,9 +16,12 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index" id="home-link">Products</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-            </li>
+            @if (Model.user is { Role: UserRole.Admin })
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/User/Index">Manage Users</a>
+                </li>
+            }
         </ul>
     </div>
 

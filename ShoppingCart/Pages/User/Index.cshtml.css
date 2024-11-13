@@ -1,0 +1,10 @@
+tr {
+    height: fit-content;
+    td {
+        height: fit-content;
+    }
+}
+
+.container-sm {
+    max-width: 500px;
+}
