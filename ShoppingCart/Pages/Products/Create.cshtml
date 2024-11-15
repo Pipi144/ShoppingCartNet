@@ -1,0 +1,107 @@
+@page
+@model ShoppingCart.Pages.Products.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container-fluid overflow-auto flex-fill flex-column align-items-center justify-content-center">
+    <h1>Add new product</h1>
+
+    <hr/>
+
+    <div class="form-wrapper row flex-fill align-items-center justify-content-center">
+        <div class="col-md-4">
+            <form method="post" enctype="multipart/form-data" id="ProductForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Product.ProductName" class="control-label"></label>
+                    <input asp-for="Product.ProductName" class="form-control"/>
+                    <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.Price" class="control-label"></label>
+                    <input asp-for="Product.Price" class="form-control"/>
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+
+                
+                <input type="file" value="Add images" class="add-img-btn" multiple="multiple"
+                       id="imageUpload"
+                       accept="image/*" name="UploadedFiles"/>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary"/>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+    <div class="img-container" id="imagePreviewContainer">
+
+    </div>
+
+    @if (Model.ErrorDisplayMessage != "")
+    {
+        <span class="error-text">
+            @Model.ErrorDisplayMessage
+        </span>
+    }
+    <div>
+        <a asp-page="Index">Back to List</a>
+    </div>
+</div>
+
+<div class="spinner-wrapper" id="spinnerWrapper">
+    <div class="spinner"></div>
+</div>
+
+
+<script>
+        //using js to handle displaying picked files
+        document.getElementById("imageUpload").addEventListener("change", function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById("imagePreviewContainer");
+
+            // Clear any existing previews
+            previewContainer.innerHTML = "";
+            Array.from(files).forEach((file,idx) => {
+                if (file && file.type.startsWith("image/")) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const div = document.createElement("div");
+                        div.style.backgroundImage = `url(${e.target.result})`;
+                        div.className = "img-item-wrapper";
+                        div.id = `${file.name}#${idx}`;
+                        const onRemove = ()=>{
+                            previewContainer.removeChild(div)
+                        }
+                        const removeBtn = document.createElement("button");
+                        removeBtn.className = "remove-btn";
+                        removeBtn.innerHTML = "X";
+                        
+                        // add click function to the remove button
+                        removeBtn.addEventListener("click", onRemove)
+                        div.appendChild(removeBtn);
+                        
+                        
+                        previewContainer.appendChild(div);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+
+        //show loading spinner when submit form
+        const spinner = document.getElementById("spinnerWrapper");
+        const form = document.getElementById("ProductForm");
+        
+        
+        form.addEventListener("submit", (event) => {
+            spinner.style.display= "flex"
+        })
+
+    </script>

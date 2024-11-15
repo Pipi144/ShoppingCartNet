@@ -1,0 +1,74 @@
+@page
+@using Microsoft.AspNetCore.Razor.Language
+@using ShoppingCart.Models
+@model ShoppingCart.Pages.Products.IndexModel
+
+@{
+    ViewData["Title"] = "Products";
+
+    bool IsProductInCart(int productId)
+    {
+        return Model.CartSession?.Items.FirstOrDefault(item => item.Product.ProductId == productId) != null;
+    }
+}
+
+<div class="container-fluid align-items-center justify-content-between flex-row d-flex mb-5">
+    <h1 class="fw-bolder">Products</h1>
+    <form class="d-flex align-items-center flex-row" asp-page-handler="SearchProduct" method="post">
+        <input asp-for="SearchString" placeholder="Search products..."/>
+        
+        <button type="submit" class="btn-sm btn-primary" style="margin-left: 5px">Search</button>
+    </form>
+    
+    
+    @if (Model.UserSession is { Role: UserRole.Admin })
+    {
+        <a asp-page="Create" class="btn btn-primary align-self-start">Add Products</a>
+    }
+</div>
+
+
+<div class="container ">
+    @if (Model.Products.Count == 0)
+    {
+        <h1 class="text-center">No product found.</h1>
+    }
+    @foreach (var (item, idx) in Model.Products.Select((item, idx) => (item, idx)))
+    {
+        <div class="item">
+            @if (item.ProductImage.Count > 0 && item.ProductImage[0].ImageUrl != null)
+            {
+                <img src="@item.ProductImage[0].ImageUrl" alt="Img#@item.ProductImage[0].ProductImageId"/>
+            }
+            else
+            {
+                <div class="empty-placeholder">
+                    No Image Available
+                </div>
+            }
+
+            <h1>@item.ProductName</h1>
+            <h2>$ @item.Price</h2>
+            @* only allow admin to edit product *@
+            @if (Model.UserSession is { Role: UserRole.Admin })
+            {
+                <div class="menu-wrapper">
+                    <a asp-page="Edit" class="btn btn-info mx-1 w-" asp-route-id="@item.ProductId">Edit</a>
+                    <a asp-page="Delete" class="btn btn-danger mx-1" asp-route-id="@item.ProductId">Delete</a>
+                </div>
+            }
+            <div class="icon-wrapper @(IsProductInCart(item.ProductId) ? "bg-transparent opacity-100" : "")">
+                <form method="post" asp-page-handler="AddCart" asp-route-productId="@item.ProductId">
+
+                    <button disabled=@(IsProductInCart(item.ProductId)) type="submit"
+                            class=" border-0 bg-transparent p-0 @(IsProductInCart(item.ProductId) ? "pe-none" : "pe-auto")" asp>
+                        <i class="bi @(IsProductInCart(item.ProductId) ? "bi-cart-check text-primary" : "bi-cart-plus-fill") icon "></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    }
+</div>

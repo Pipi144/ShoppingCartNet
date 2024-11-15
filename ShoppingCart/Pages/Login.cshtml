@@ -1,0 +1,37 @@
+@page
+@model ShoppingCart.Pages.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container">
+    <span class="title">Login</span>
+    <div class="form-container">
+        <form method="post" >
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Login" class="btn btn-primary submit-input mt-5 w-100" />
+          
+
+
+        </form>
+        
+        <span class="error-text">
+            @Model.ErrorMessage
+        </span>
+    </div>
+    
+    <a asp-page="/User/Create" style="padding: 5px 10px; border-radius: 5px; color: white;background-color: #0d6efd; 
+margin-top: 20px; text-decoration: none; font-weight: 600; cursor: pointer;">
+        Create User
+    </a>
+</div>
+

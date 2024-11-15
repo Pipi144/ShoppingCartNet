@@ -1,0 +1,44 @@
+@page
+@model ShoppingCart.Pages.User.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container-sm d-flex flex-row justify-content-between">
+    <a asp-page="./Index" class="d-flex align-items-center">
+        <i class="bi bi-chevron-left" style="margin-right: 8px"></i>
+        Back to List
+    </a>
+
+    <h2>Edit User</h2>
+</div>
+
+
+<hr />
+<div class="container-sm flex-fill d-flex flex-column ">
+    
+    <form method="post">
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="User.Id"/>
+        <input type="hidden" asp-for="User.Role"/>
+        <div class="form-group">
+            <label asp-for="User.UserName" class="control-label"></label>
+            <input asp-for="User.UserName" class="form-control"/>
+            <span asp-validation-for="User.UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.Password" class="control-label"></label>
+            <input asp-for="User.Password" class="form-control"  type="password"/>
+            <span asp-validation-for="User.Password" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group d-flex justify-content-end">
+            <input type="submit" value="Save" class="btn btn-primary align-self-end"/>
+        </div>
+    </form>
+    
+</div>
+
+
+

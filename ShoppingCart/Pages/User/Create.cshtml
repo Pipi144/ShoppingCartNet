@@ -1,0 +1,52 @@
+@page
+@model ShoppingCart.Pages.User.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-sm d-flex flex-row justify-content-between">
+    <a asp-page="./Index" class="d-flex align-items-center">
+        <i class="bi bi-chevron-left" style="margin-right: 8px"></i>
+        Back to List
+    </a>
+
+    <h2>Create User</h2>
+</div>
+<hr/>
+<div class="container-sm flex-fill d-flex flex-column ">
+
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="User.UserName" class="control-label"></label>
+            <input asp-for="User.UserName" class="form-control"/>
+            <span asp-validation-for="User.UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="User.Password" class="control-label"></label>
+            <input asp-for="User.Password" class="form-control"/>
+            <span asp-validation-for="User.Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="userOptions" class="control-label"></label>
+            <select asp-for="UserRole" id="userOptions" class="form-select">
+                @foreach (var option in Model.UserRoleOptions)
+                {
+                    <option value="@option">@option</option>
+                }
+            </select>
+            
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary"/>
+        </div>
+    </form>
+
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
